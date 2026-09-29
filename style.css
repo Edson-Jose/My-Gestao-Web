@@ -1,0 +1,132 @@
+/* Configurações gerais e cores do projeto */
+:root {
+    --cor-fundo: #0B132B; /* Azul marinho escuro para fora da tela */
+    --cor-fundo-celular: #0B132B; /* Fundo interno do app */
+    --cor-texto: #E0FBFC; /* Texto claro */
+    --cor-primaria: #48CAE4; /* Azul ciano tecnológico */
+    --cor-acao: #F77F00; /* Laranja Vibrante */
+    --cor-alerta: #EF476F; /* Vermelho moderno */
+}
+
+/* Reset básico para todos os navegadores */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #050811; /* Fundo externo escuro para destacar o celular */
+    color: var(--cor-texto);
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Regras para mostrar ou esconder as telas */
+.visivel { display: block; }
+.escondida { display: none; }
+
+/* Estilizando a Caixa de Login */
+.caixa-login {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 50px;
+}
+
+/* Estilizando os campos de digitar (Inputs e Selects com fundo claro e números pretos) */
+input, select, textarea {
+    width: 100%;
+    padding: 15px;
+    background-color: #F8FAFC !important; /* Fundo claro para excelente contraste */
+    border: 1px solid #94A3B8 !important;
+    border-radius: 8px;
+    font-size: 16px;
+    color: #0F172A !important; /* Números e textos digitados em PRETO bem visível */
+    font-weight: 700 !important;
+}
+
+input::placeholder, select::placeholder {
+    color: #64748B !important;
+}
+
+input:focus, select:focus {
+    outline: 2px solid var(--cor-primaria);
+}
+
+/* Estilizando o botão principal */
+.botao-principal {
+    background-color: var(--cor-acao);
+    color: white;
+    padding: 15px;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+/* Alertas */
+.alerta-critico {
+    background-color: #FED7D7;
+    color: #C53030;
+    padding: 15px;
+    border-radius: 8px;
+    font-weight: bold;
+    margin-top: 15px;
+    margin-bottom: 20px;
+}
+
+/* Cards das telas principais (Planejamento, Estoque, Vendas, etc.) com fundo branco e TEXTO PRETO */
+.card {
+    background-color: #FFFFFF !important;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    margin-bottom: 15px;
+    color: #0F172A !important; /* Garante que qualquer texto geral dentro do card seja escuro */
+}
+
+/* Força títulos, parágrafos, labels e textos dentro dos cards a ficarem escuros */
+.card h1, .card h2, .card h3, .card h4, .card p, .card span, .card label {
+    color: #0F172A !important;
+}
+
+/* Números e valores nas telas principais com cor escura e destaque */
+.valor {
+    font-size: 24px;
+    font-weight: bold;
+    color: #1A365D !important; /* Azul escuro forte para os valores numéricos */
+    margin-top: 5px;
+}
+
+.botao-acao {
+    width: 100%;
+    background-color: #1A365D;
+    color: white;
+    padding: 15px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.botao-secundario {
+    width: 100%;
+    background-color: transparent;
+    color: var(--cor-texto);
+    padding: 15px;
+    border: 2px solid #CBD5E1;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+}
+

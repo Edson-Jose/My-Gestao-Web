@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Gestão - App</title>
+    
+    <link rel="stylesheet" href="output.css">
+    
+</head>
+<body class="bg-gray-200 min-h-screen flex items-center justify-center sm:py-8">
+
+    <!-- CONTAINER MOBILE -->
+    <div class="w-full max-w-[414px] min-h-screen sm:min-h-[800px] bg-fundo text-texto relative overflow-hidden sm:rounded-[2rem] sm:border-8 border-gray-800 shadow-2xl flex flex-col">
+
+        <!-- TELA 1: LOGIN -->
+        <main id="tela-login" class="tela-app flex flex-col flex-1 p-6 justify-center">
+            <div class="mb-8 text-center">
+                <h1 class="text-4xl font-bold text-primaria mb-2">My Gestão</h1>
+                <p class="text-gray-500">Controle de loja simplificado</p>
+            </div>
+            
+            <div class="flex flex-col gap-4">
+                <div>
+                    <label for="login-nome" class="block mb-2 font-medium">Seu Nome</label>
+                    <input type="text" id="login-nome" placeholder="Ex: nome do usuário" 
+                           class="w-full p-4 border border-gray-300 rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-primaria">
+                </div>
+
+                <div>
+                    <label for="login-input" class="block mb-2 font-medium">E-mail ou Telefone</label>
+                    <input type="text" id="login-input" placeholder="Telefone ou e-mail" 
+                           class="w-full p-4 border border-gray-300 rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-primaria">
+                    <p id="login-erro" class="text-alerta text-sm mt-2 hidden font-bold">⚠️ Preencha o nome e um contato válido!</p>
+                </div>
+                
+                <div>
+                    <label for="senha" class="block mb-2 font-medium">Senha</label>
+                    <input type="password" id="senha" placeholder="Sua senha" 
+                           class="w-full p-4 border border-gray-300 rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-primaria">
+                </div>
+                
+                <button id="btn-entrar" class="w-full bg-acao text-white p-4 rounded-lg text-lg font-bold mt-2 hover:opacity-90 transition">
+                    Entrar
+                </button>
+            </div>
+        </main>
+
+        <!-- TELA 2: DASHBOARD -->
+        <main id="tela-dashboard" class="tela-app hidden flex-col flex-1 p-6 overflow-y-auto">
+            <header class="mb-4 mt-2">
+                <h2 id="dash-saudacao" class="text-2xl font-bold text-primaria">Olá, Usuário!</h2>
+            </header>
+
+            <section class="flex flex-col gap-3 mb-6">
+                <!-- Vendas do Mês -->
+                <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
+                    <h3 class="text-gray-500 font-medium text-sm">Vendas do Mês</h3>
+                    <div class="flex justify-between items-center mt-1">
+                        <p id="dash-total-vendas" class="text-3xl font-bold text-primaria">R$ 0,00</p>
+                        <button id="btn-ver-logs" class="p-2 bg-gray-50 border border-gray-200 rounded-lg hover:bg-gray-100 transition shadow-sm" title="Ver Histórico">
+                            <svg class="w-6 h-6 text-primaria" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Total em Estoque -->
+                <div onclick="abrirEstoque()" class="bg-white p-4 rounded-lg shadow-sm border border-gray-100 cursor-pointer hover:bg-gray-50 transition flex justify-between items-center">
+                    <div>
+                        <h3 class="text-gray-500 font-medium text-sm">Total em Estoque</h3>
+                        <p id="dash-total-estoque" class="text-2xl font-bold text-primaria mt-1">0 peças</p>
+                    </div>
+                    <div class="p-2 bg-sucesso/10 text-sucesso rounded-lg">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+                    </div>
+                </div>
+
+                <!-- BLOCO PLANEJAMENTO (META DO MÊS) -->
+                <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-100 flex flex-col gap-3">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-gray-500 font-medium text-sm">🎯 Planejamento (Meta do Mês)</h3>
+                        <button onclick="alternarEdicaoMeta()" id="btn-editar-meta-texto" class="text-xs text-acao font-bold hover:underline">Editar Meta</button>
+                    </div>
+                    
+                    <div class="flex justify-between items-end">
+                        <div>
+                            <p class="text-xs text-gray-400">Meta: <span id="meta-valor-exibicao" class="font-bold text-texto">R$ 3.000,00</span></p>
+                            <p id="meta-progresso-rs" class="text-sm font-medium text-primaria mt-1">Falta: R$ 3.000,00</p>
+                        </div>
+                        <div class="text-right">
+                            <span id="meta-progresso-porcentagem" class="text-2xl font-bold text-acao">0%</span>
+                        </div>
+                    </div>
+
+                    <!-- Caixa de edição rápida oculta por padrão -->
+                    <div id="painel-edicao-meta" class="hidden flex gap-2 pt-2 border-t border-gray-100">
+                        <input type="number" id="input-nova-meta" placeholder="Novo valor" step="0.01" class="w-full p-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primaria">
+                        <button onclick="salvarMeta()" class="bg-sucesso text-white px-3 py-2 rounded-lg text-sm font-bold hover:opacity-90">Salvar</button>
+                    </div>
+
+                    <!-- Barra de Progresso -->
+                    <div class="w-full bg-gray-200 h-2 rounded-full overflow-hidden">
+                        <div id="meta-barra" class="bg-sucesso h-full w-0 transition-all duration-500"></div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="mt-auto flex flex-col gap-3 pb-2">
+                <button id="btn-ir-cadastro" class="w-full bg-sucesso text-white p-4 rounded-lg text-base font-bold hover:opacity-90 transition shadow-md">
+                    📦 Cadastrar Produto
+                </button>
+                <button id="btn-nova-venda" class="w-full bg-primaria text-white p-4 rounded-lg text-base font-bold hover:opacity-90 transition shadow-md">
+                    🛒 Registrar Nova Venda
+                </button>
+            </div>
+        </main>
+
+        <!-- TELA 3: CADASTRAR PRODUTO -->
+        <main id="tela-cadastro" class="tela-app hidden flex-col flex-1 p-6">
+            <header class="mb-6 mt-4">
+                <h2 class="text-2xl font-bold text-primaria">📦 Novo Produto</h2>
+            </header>
+
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-100 flex flex-col gap-4 overflow-y-auto">
+                <div>
+                    <label for="cad-nome" class="block mb-1 font-medium text-sm">Nome do Produto</label>
+                    <input type="text" id="cad-nome" placeholder="Ex: Vestido Floral" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primaria">
+                </div>
+                
+                <div class="flex gap-3">
+                    <div class="flex-1">
+                        <label for="cad-categoria" class="block mb-1 font-medium text-sm">Categoria</label>
+                        <select id="cad-categoria" class="w-full p-3 border border-gray-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-primaria">
+                            <option value="Feminina">Feminina</option>
+                            <option value="Masculina">Masculina</option>
+                        </select>
+                    </div>
+                    <div class="w-1/3">
+                        <label for="cad-tamanho" class="block mb-1 font-medium text-sm">Tamanho</label>
+                        <select id="cad-tamanho" class="w-full p-3 border border-gray-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-primaria">
+                            <option value="P">P</option><option value="M">M</option><option value="G">G</option><option value="GG">GG</option><option value="Único">Único</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="flex gap-3">
+                    <div class="flex-1">
+                        <label for="cad-valor" class="block mb-1 font-medium text-sm">Valor (R$)</label>
+                        <input type="number" id="cad-valor" placeholder="50.00" step="0.01" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primaria">
+                    </div>
+                    <div class="w-1/3">
+                        <label for="cad-estoque" class="block mb-1 font-medium text-sm">Qtd.</label>
+                        <input type="number" id="cad-estoque" value="1" min="0" class="w-full p-3 border border-gray-300 rounded-lg text-center focus:outline-none focus:ring-2 focus:ring-primaria">
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-auto flex flex-col gap-3 pb-2">
+                <button id="btn-salvar-produto" class="w-full bg-sucesso text-white p-4 rounded-lg text-base font-bold hover:opacity-90 transition shadow-md">
+                    Salvar Produto
+                </button>
+                <button onclick="navigateTo('tela-dashboard')" class="w-full bg-transparent text-texto p-4 border-2 border-gray-300 rounded-lg text-base font-bold hover:bg-gray-50 transition">
+                    Voltar ao Início
+                </button>
+            </div>
+        </main>
+
+        <!-- TELA 4: REGISTRAR NOVA VENDA -->
+        <main id="tela-nova-venda" class="tela-app hidden flex-col flex-1 p-6 overflow-y-auto">
+            <header class="mb-6 mt-4">
+                <h2 class="text-2xl font-bold text-primaria">🛒 Nova Venda</h2>
+            </header>
+
+            <div class="bg-white p-5 rounded-lg shadow-sm border border-gray-100 flex flex-col gap-4 mb-4">
+                <div>
+                    <label for="venda-produto" class="block mb-2 font-medium">Qual o produto e tamanho?</label>
+                    <select id="venda-produto" class="w-full p-4 border border-gray-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-primaria">
+                        <!-- Injetado via JS -->
+                    </select>
+                </div>
+
+                <div>
+                    <label for="venda-quantidade" class="block mb-2 font-medium">Quantidade:</label>
+                    <input type="number" id="venda-quantidade" value="1" min="1"
+                           class="w-full p-4 border border-gray-300 rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-primaria text-center">
+                </div>
+
+                <div class="mt-2 p-4 bg-gray-100 rounded-lg text-center border border-gray-200">
+                    <p id="venda-valor-total" class="text-2xl font-bold text-primaria">Valor: R$ 0,00</p>
+                </div>
+            </div>
+
+            <div class="mt-auto flex flex-col gap-3 pb-2">
+                <button id="btn-confirmar-venda" class="w-full bg-acao text-white p-4 rounded-lg text-base font-bold hover:opacity-90 transition shadow-md">
+                    Confirmar Venda
+                </button>
+                <button onclick="navigateTo('tela-dashboard')" class="w-full bg-transparent text-texto p-4 border-2 border-gray-300 rounded-lg text-base font-bold hover:bg-gray-50 transition">
+                    Cancelar
+                </button>
+            </div>
+        </main>
+
+        <!-- TELA 5: GERENCIAR ESTOQUE -->
+        <main id="tela-estoque" class="tela-app hidden flex-col flex-1 p-6">
+            <header class="mb-4 mt-2">
+                <h2 class="text-2xl font-bold text-primaria">📦 Meu Estoque</h2>
+                <p class="text-gray-500 text-sm">Controle as categorias e quantidades.</p>
+            </header>
+
+            <!-- Abas de Filtro de Categoria -->
+            <div class="flex bg-gray-200 rounded-lg p-1 mb-4">
+                <button id="tab-Todos" onclick="filtrarEstoque('Todos')" class="tab-estoque flex-1 py-2 bg-white rounded-md shadow-sm font-bold text-primaria text-sm transition">Todos</button>
+                <button id="tab-Feminina" onclick="filtrarEstoque('Feminina')" class="tab-estoque flex-1 py-2 rounded-md text-gray-500 font-medium text-sm transition">Feminina</button>
+                <button id="tab-Masculina" onclick="filtrarEstoque('Masculina')" class="tab-estoque flex-1 py-2 rounded-md text-gray-500 font-medium text-sm transition">Masculina</button>
+            </div>
+
+            <div class="flex-1 overflow-y-auto mb-4 bg-gray-50 rounded-lg p-2 border border-gray-100">
+                <ul id="lista-estoque" class="flex flex-col gap-3">
+                    <!-- Produtos do estoque injetados via JS -->
+                </ul>
+            </div>
+
+            <div class="mt-auto flex flex-col gap-3 pb-2">
+                <button onclick="navigateTo('tela-cadastro')" class="w-full bg-sucesso text-white p-4 rounded-lg text-base font-bold hover:opacity-90 transition shadow-md">
+                    + Cadastrar Novo Produto
+                </button>
+                <button onclick="navigateTo('tela-dashboard')" class="w-full bg-transparent text-texto p-4 border-2 border-gray-300 rounded-lg text-base font-bold hover:bg-gray-50 transition">
+                    Voltar ao Início
+                </button>
+            </div>
+        </main>
+
+        <!-- TELA 6: LOGS DE VENDAS -->
+        <main id="tela-logs" class="tela-app hidden flex-col flex-1 p-6">
+            <header class="mb-4 mt-2 flex justify-between items-center gap-2">
+                <h2 class="text-xl font-bold text-primaria">📊 Relatório</h2>
+                <input type="month" id="filtro-mes" class="p-2 border border-gray-300 rounded-lg text-sm bg-white outline-none focus:ring-2 focus:ring-primaria">
+            </header>
+
+            <div class="flex-1 overflow-y-auto mb-4 border border-gray-100 bg-gray-50 rounded-lg p-2">
+                <ul id="lista-logs" class="flex flex-col gap-3"></ul>
+            </div>
+
+            <div class="mt-auto flex flex-col gap-3 pb-2">
+                <div class="p-4 bg-white rounded-lg shadow-sm border border-gray-200 text-center mb-2">
+                    <p class="text-gray-500 text-sm font-medium">Total Filtrado</p>
+                    <p id="logs-total-filtrado" class="text-2xl font-bold text-primaria">R$ 0,00</p>
+                </div>
+                <button onclick="navigateTo('tela-dashboard')" class="w-full bg-transparent text-texto p-4 border-2 border-gray-300 rounded-lg text-base font-bold hover:bg-gray-50 transition">
+                    Voltar ao Início
+                </button>
+            </div>
+        </main>
+
+    </div>
+
+    <!-- SCRIPT -->
+    <script>
+        // --- BANCO DE DADOS TEMPORÁRIO ---
+        let produtosCadastrados = [
+            { id: 1, nome: "Camiseta Básica", categoria: "Masculina", tamanho: "M", preco: 50.00, estoque: 18 },
+            { id: 2, nome: "Calça Moletom", categoria: "Masculina", tamanho: "G", preco: 90.00, estoque: 10 },
+            { id: 3, nome: "Vestido Floral", categoria: "Feminina", tamanho: "P", preco: 120.00, estoque: 4 }
+        ];
+
+        let vendasRealizadas = []; 
+        let filtroCategoriaAtual = 'Todos';
+        let nomeUsuario = 'Usuário';
+        let metaMensal = 3000.00; // Meta padrão inicial
+
+        function navigateTo(viewId) {
+            document.querySelectorAll('.tela-app').forEach(tela => {
+                tela.classList.add('hidden');
+                tela.classList.remove('flex');
+            });
+            const telaAlvo = document.getElementById(viewId);
+            telaAlvo.classList.remove('hidden');
+            telaAlvo.classList.add('flex');
+            window.scrollTo(0, 0);
+        }
+
+        // --- MÁSCARA TELEFONE / EMAIL ---
+        const loginInput = document.getElementById('login-input');
+        loginInput.addEventListener('input', function(e) {
+            let v = e.target.value;
+            if (/[a-zA-Z@]/.test(v)) return; 
+            v = v.replace(/\D/g, "");
+            if (v.length > 0) v = v.replace(/^(\d{2})/, "($1) ");
+            if (v.length > 5) v = v.replace(/(\(\d{2}\)\s)(\d)/, "$1$2 ");
+            if (v.length > 10) v = v.replace(/(\d{4})(\d)/, "$1-$2");
+            if (v.length > 16) v = v.substring(0, 16);
+            e.target.value = v;
+        });
+
+        // --- LOGIN ---
+        document.getElementById('btn-entrar').addEventListener('click', () => {
+            const inputNome = document.getElementById('login-nome').value.trim();
+            const valorContato = loginInput.value.trim();
+            const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(valorContato);
+            const telefoneValido = /^\(\d{2}\)\s\d\s\d{4}-\d{4}$/.test(valorContato);
+
+            if (inputNome && (emailValido || telefoneValido)) {
+                nomeUsuario = inputNome;
+                document.getElementById('dash-saudacao').innerText = `Olá, ${nomeUsuario}!`;
+                document.getElementById('login-erro').classList.add('hidden');
+                atualizarDashboard(); 
+                navigateTo('tela-dashboard');
+            } else {
+                document.getElementById('login-erro').classList.remove('hidden');
+            }
+        });
+
+        // --- EDITAR META (DIRETO NA TELA) ---
+        function alternarEdicaoMeta() {
+            const painel = document.getElementById('painel-edicao-meta');
+            const input = document.getElementById('input-nova-meta');
+            const btnTexto = document.getElementById('btn-editar-meta-texto');
+
+            if (painel.classList.contains('hidden')) {
+                painel.classList.remove('hidden');
+                painel.classList.add('flex');
+                input.value = metaMensal;
+                input.focus();
+                btnTexto.innerText = 'Fechar';
+            } else {
+                painel.classList.add('hidden');
+                painel.classList.remove('flex');
+                btnTexto.innerText = 'Editar Meta';
+            }
+        }
+
+        function salvarMeta() {
+            const input = document.getElementById('input-nova-meta');
+            const novoValor = parseFloat(input.value);
+
+            if (!isNaN(novoValor) && novoValor >= 0) {
+                metaMensal = novoValor;
+                atualizarDashboard();
+                alternarEdicaoMeta(); // Fecha o painel
+            } else {
+                alert("Por favor, digite um valor numérico válido.");
+            }
+        }
+
+        // --- DASHBOARD & PLANEJAMENTO ---
+        function atualizarDashboard() {
+            const dataAtual = new Date();
+            const mesAtual = dataAtual.getMonth();
+            const anoAtual = dataAtual.getFullYear();
+            let totalMes = 0;
+
+            vendasRealizadas.forEach(venda => {
+                const dataVenda = new Date(venda.data);
+                if (dataVenda.getMonth() === mesAtual && dataVenda.getFullYear() === anoAtual) {
+                    totalMes += venda.total;
+                }
+            });
+
+            // Atualiza Vendas do Mês
+            document.getElementById('dash-total-vendas').innerText = `R$ ${totalMes.toFixed(2).replace('.', ',')}`;
+
+            // Atualiza Estoque
+            let totalPecas = 0;
+            produtosCadastrados.forEach(p => totalPecas += p.estoque);
+            document.getElementById('dash-total-estoque').innerText = `${totalPecas} peças`;
+
+            // Atualiza Bloco Planejamento / Meta
+            document.getElementById('meta-valor-exibicao').innerText = `R$ ${metaMensal.toFixed(2).replace('.', ',')}`;
+            
+            let porcentagem = metaMensal > 0 ? (totalMes / metaMensal) * 100 : 0;
+            if (porcentagem > 100) porcentagem = 100;
+
+            let faltaRs = metaMensal - totalMes;
+            if (faltaRs < 0) faltaRs = 0;
+
+            document.getElementById('meta-progresso-porcentagem').innerText = `${porcentagem.toFixed(0)}%`;
+            document.getElementById('meta-barra').style.width = `${porcentagem}%`;
+
+            if (faltaRs > 0) {
+                document.getElementById('meta-progresso-rs').innerText = `Falta: R$ ${faltaRs.toFixed(2).replace('.', ',')}`;
+                document.getElementById('meta-progresso-rs').className = "text-sm font-medium text-primaria mt-1";
+            } else {
+                document.getElementById('meta-progresso-rs').innerText = `🎉 Meta batida! Parabéns!`;
+                document.getElementById('meta-progresso-rs').className = "text-sm font-bold text-sucesso mt-1";
+            }
+        }
+
+        // --- CADASTRAR PRODUTO ---
+        document.getElementById('btn-ir-cadastro').addEventListener('click', () => navigateTo('tela-cadastro'));
+
+        document.getElementById('btn-salvar-produto').addEventListener('click', () => {
+            const nome = document.getElementById('cad-nome').value;
+            const categoria = document.getElementById('cad-categoria').value;
+            const tamanho = document.getElementById('cad-tamanho').value;
+            const valor = parseFloat(document.getElementById('cad-valor').value);
+            const estoque = parseInt(document.getElementById('cad-estoque').value) || 0;
+
+            if (!nome || isNaN(valor)) {
+                alert("Por favor, preencha o nome e o valor."); return;
+            }
+
+            produtosCadastrados.push({
+                id: Date.now(),
+                nome: nome,
+                categoria: categoria,
+                tamanho: tamanho,
+                preco: valor,
+                estoque: estoque
+            });
+
+            alert(`Produto cadastrado com sucesso!`);
+            document.getElementById('cad-nome').value = ''; 
+            document.getElementById('cad-valor').value = '';
+            document.getElementById('cad-estoque').value = '1';
+            atualizarDashboard();
+            navigateTo('tela-dashboard');
+        });
+
+        // --- GERENCIAR ESTOQUE ---
+        function abrirEstoque() {
+            filtrarEstoque('Todos');
+            navigateTo('tela-estoque');
+        }
+
+        function filtrarEstoque(categoria) {
+            filtroCategoriaAtual = categoria;
+            
+            document.querySelectorAll('.tab-estoque').forEach(btn => {
+                if(btn.id === `tab-${categoria}`) {
+                    btn.classList.replace('text-gray-500', 'text-primaria');
+                    btn.classList.add('bg-white', 'shadow-sm', 'font-bold');
+                } else {
+                    btn.classList.replace('text-primaria', 'text-gray-500');
+                    btn.classList.remove('bg-white', 'shadow-sm', 'font-bold');
+                }
+            });
+
+            renderizarListaEstoque();
+        }
+
+        function alterarEstoque(idProduto, quantidadeMudanca) {
+            const produto = produtosCadastrados.find(p => p.id === idProduto);
+            if(produto) {
+                if (produto.estoque + quantidadeMudanca < 0) return; 
+                produto.estoque += quantidadeMudanca;
+                renderizarListaEstoque();
+                atualizarDashboard(); 
+            }
+        }
+
+        function renderizarListaEstoque() {
+            const lista = document.getElementById('lista-estoque');
+            lista.innerHTML = '';
+
+            const produtosFiltrados = filtroCategoriaAtual === 'Todos' 
+                ? produtosCadastrados 
+                : produtosCadastrados.filter(p => p.categoria === filtroCategoriaAtual);
+
+            if (produtosFiltrados.length === 0) {
+                lista.innerHTML = `<p class="text-center text-gray-500 mt-4">Nenhum produto na categoria ${filtroCategoriaAtual}.</p>`;
+                return;
+            }
+
+            produtosFiltrados.forEach(p => {
+                let corNivel = '';
+                let textoNivel = '';
+                
+                if (p.estoque <= 5) {
+                    corNivel = 'bg-red-100 text-red-700 border-red-200';
+                    textoNivel = 'Baixo';
+                } else if (p.estoque <= 15) {
+                    corNivel = 'bg-yellow-100 text-yellow-700 border-yellow-200';
+                    textoNivel = 'Médio';
+                } else {
+                    corNivel = 'bg-green-100 text-green-700 border-green-200';
+                    textoNivel = 'Alto';
+                }
+
+                const li = document.createElement('li');
+                li.className = "p-4 rounded-lg shadow-sm border border-gray-200 bg-white flex flex-col gap-3";
+                li.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="font-bold text-primaria">${p.nome} <span class="font-normal text-gray-500 text-sm">(${p.tamanho})</span></p>
+                            <p class="text-sm text-gray-500">R$ ${p.preco.toFixed(2).replace('.', ',')} • ${p.categoria}</p>
+                        </div>
+                        <span class="text-xs font-bold px-2 py-1 rounded border ${corNivel}">Estoque: ${textoNivel}</span>
+                    </div>
+                    <div class="flex justify-between items-center pt-2 border-t border-gray-100">
+                        <span class="text-sm text-gray-500">Em estoque:</span>
+                        <div class="flex items-center gap-3">
+                            <button onclick="alterarEstoque(${p.id}, -1)" class="w-8 h-8 flex items-center justify-center bg-gray-200 rounded-full font-bold text-xl text-gray-700 hover:bg-gray-300">-</button>
+                            <span class="font-bold text-lg w-6 text-center">${p.estoque}</span>
+                            <button onclick="alterarEstoque(${p.id}, 1)" class="w-8 h-8 flex items-center justify-center bg-sucesso text-white rounded-full font-bold text-xl hover:bg-green-600">+</button>
+                        </div>
+                    </div>
+                `;
+                lista.appendChild(li);
+            });
+        }
+
+        // --- VENDAS ---
+        const selectProduto = document.getElementById('venda-produto');
+        const inputQuantidade = document.getElementById('venda-quantidade');
+        const displayTotal = document.getElementById('venda-valor-total');
+
+        document.getElementById('btn-nova-venda').addEventListener('click', () => {
+            selectProduto.innerHTML = '<option value="">-- Escolha um produto --</option>';
+            
+            produtosCadastrados.forEach(produto => {
+                const option = document.createElement('option');
+                option.value = produto.id;
+                
+                if (produto.estoque > 0) {
+                    option.text = `${produto.nome} (${produto.categoria} - Tam: ${produto.tamanho}) - R$ ${produto.preco.toFixed(2)}`;
+                } else {
+                    option.text = `❌ ${produto.nome} (ESGOTADO)`;
+                    option.disabled = true;
+                }
+                selectProduto.appendChild(option);
+            });
+            
+            calcularTotal();
+            navigateTo('tela-nova-venda');
+        });
+
+        function calcularTotal() {
+            const id = selectProduto.value;
+            const qtd = parseInt(inputQuantidade.value) || 0;
+            const prod = produtosCadastrados.find(p => p.id == id);
+
+            if (prod && qtd > 0) {
+                if (qtd > prod.estoque) {
+                    displayTotal.innerHTML = `<span class="text-alerta">Estoque insuficiente! (Máx: ${prod.estoque})</span>`;
+                } else {
+                    displayTotal.innerText = `Valor: R$ ${(prod.preco * qtd).toFixed(2).replace('.', ',')}`;
+                }
+            } else {
+                displayTotal.innerText = `Valor: R$ 0,00`;
+            }
+        }
+
+        selectProduto.addEventListener('change', calcularTotal);
+        inputQuantidade.addEventListener('input', calcularTotal);
+
+        document.getElementById('btn-confirmar-venda').addEventListener('click', () => {
+            const id = selectProduto.value;
+            const qtd = parseInt(inputQuantidade.value) || 0;
+            const prod = produtosCadastrados.find(p => p.id == id);
+
+            if (!prod || qtd <= 0) {
+                alert('Selecione um produto e quantidade.'); return;
+            }
+            if (qtd > prod.estoque) {
+                alert(`Temos apenas ${prod.estoque} unidades no estoque!`); return;
+            }
+
+            prod.estoque -= qtd;
+
+            vendasRealizadas.push({
+                id: Date.now(),
+                produtoNome: prod.nome,
+                tamanho: prod.tamanho,
+                categoria: prod.categoria,
+                quantidade: qtd,
+                total: prod.preco * qtd,
+                data: new Date().toISOString()
+            });
+
+            alert('Venda registrada e estoque atualizado! 💰📦');
+            inputQuantidade.value = 1; 
+            atualizarDashboard(); 
+            navigateTo('tela-dashboard');
+        });
+
+        // --- RELATÓRIO / LOGS ---
+        const filtroMes = document.getElementById('filtro-mes');
+        const listaLogs = document.getElementById('lista-logs');
+        
+        document.getElementById('btn-ver-logs').addEventListener('click', () => {
+            if(!filtroMes.value) {
+                const d = new Date();
+                filtroMes.value = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+            }
+            renderizarLogs();
+            navigateTo('tela-logs');
+        });
+
+        filtroMes.addEventListener('change', renderizarLogs);
+
+        function renderizarLogs() {
+            listaLogs.innerHTML = '';
+            if (!filtroMes.value) return;
+
+            const [ano, mes] = filtroMes.value.split('-');
+            let total = 0;
+            const filtradas = vendasRealizadas.filter(v => {
+                const dv = new Date(v.data);
+                return dv.getFullYear() == ano && (dv.getMonth()+1) == mes;
+            });
+
+            if(filtradas.length === 0) {
+                listaLogs.innerHTML = '<p class="text-gray-400 text-center mt-6 text-sm">Nenhuma venda registrada.</p>';
+                document.getElementById('logs-total-filtrado').innerText = 'R$ 0,00';
+                return;
+            }
+
+            filtradas.forEach(v => {
+                total += v.total;
+                const li = document.createElement('li');
+                li.className = "bg-white p-4 rounded-lg shadow-sm border border-gray-100";
+                li.innerHTML = `
+                    <div class="flex justify-between font-bold text-primaria mb-1">
+                        <span>${v.produtoNome} <span class="font-normal text-xs text-gray-400">(${v.categoria})</span></span>
+                        <span>R$ ${v.total.toFixed(2).replace('.', ',')}</span>
+                    </div>
+                    <div class="flex justify-between text-gray-500 text-xs">
+                        <span>Tam: ${v.tamanho} | Qtd: ${v.quantidade}</span>
+                        <span>${new Date(v.data).toLocaleDateString('pt-BR')}</span>
+                    </div>
+                `;
+                listaLogs.prepend(li);
+            });
+            document.getElementById('logs-total-filtrado').innerText = `R$ ${total.toFixed(2).replace('.', ',')}`;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+#  My Gestão — Protótipo de Alta Fidelidade
+
+Aplicativo web mobile-first desenvolvido para auxiliar microempreendedoras no controle simplificado de estoque, registro de vendas, planejamento e acompanhamento de metas financeiras.
+
+---
+
+##  Sobre o Projeto
+O **Mari Gestão** nasceu da necessidade de simplificar a rotina de gestão de pequenos negócios (como lojas de vestuário e varejo autônomo), eliminando planilhas complexas e oferecendo uma interface intuitiva, moderna e altamente acessível. O projeto foi estruturado como uma **Single Page Application (SPA)** utilizando HTML5, Tailwind CSS (com compilação via CLI v4) e JavaScript puro para gerenciamento de estados e interações dinâmicas.
+
+---
+
+##  Alinhamento com a Avaliação e Critérios Atendidos
+
+### 1. Protótipo de Alta Fidelidade & Fluxo de Interação
+* **Design Responsivo Mobile-First:** Estruturado com uma moldura dedicada de alta fidelidade (`max-w-[414px]`), simulando a experiência real de um aplicativo de smartphone.
+* **Navegação Dinâmica (SPA):** Transições instantâneas entre as telas de Login, Dashboard, Cadastro de Produtos, Registro de Vendas, Controle de Estoque e Planejamento/Metas sem recarregar a página.
+* **Interatividade Avançada:** Painel flutuante embutido para edição dinâmica de metas financeiras e atualização em tempo real de totais de caixa e estoque.
+
+### 2. Acessibilidade e Critérios WCAG 2 Implementados
+O projeto segue rigorosamente as diretrizes da **WCAG 2.2** para garantir inclusão digital e usabilidade universal:
+* **Critério 1.4.3 (Contraste Mínimo):** Utilização de paleta de cores de alto contraste (textos escuros `#0F172A` sobre fundos claros `#FFFFFF` e `#F8FAFC`), assegurando leitura confortável para usuários com baixa visão.
+* **Critério 2.5.5 (Tamanhos de Alvo de Toque):** Botões e elementos interativos dimensionados com áreas de clique generosas (padding de `15px` e alturas superiores a `48px`), facilitando a navegação motora.
+* **Critério 1.3.1 (Informações e Relações Semânticas):** Uso de tags HTML semânticas (`<label>`, `<input>`, `<select>`, `<main>`) e associação direta de rótulos para suporte a leitores de tela.
+
+### 3. Foco na Persona e Resolução de Problemas
+* **Persona (Mariana):** Microempreendedora que precisa gerenciar vendas rapidamente entre atendimentos a clientes.
+* **Solução:** Redução de fricção no cadastro de mercadorias, alertas visuais para produtos com estoque crítico e visualização clara do progresso da meta mensal.
+
+### 4. Evolução da Solução
+* **Fase Inicial (Baixa Fidelidade):** Wireframes estáticos focados em mapear a jornada do usuário e a hierarquia básica de telas.
+* **Fase Atual (Alta Fidelidade):** Transição para um protótipo funcional estilizado, incorporando feedback de usabilidade, efeitos visuais modernos (Glassmorphism sutil), validação de formulários e painéis interativos de edição rápida.
+
+---
+
+##  Tecnologias Utilizadas
+* **HTML5:** Estrutura semântica das páginas.
+* **Tailwind CSS (v4):** Estilização moderna e customização de variáveis de tema (`@theme`).
+* **JavaScript (ES6+):** Manipulação de DOM, regras de negócio e controle de fluxo das telas.
+* **Node.js & Tailwind CLI:** Compilação otimizada de estilos em ambiente de desenvolvimento.
+
+---
+
+##  Como Executar o Projeto Localmente
+
+1. Certifique-se de ter o **Node.js** instalado em seu computador.
+2. Clone este repositório ou baixe os arquivos fonte.
+3. Instale as dependências (se aplicável) e inicie o compilador do Tailwind CSS via terminal:
+   ```bash
+   npx @tailwindcss/cli -i ./src/input.css -o ./output.css --watch
